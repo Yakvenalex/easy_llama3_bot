@@ -70,10 +70,16 @@ python aiogram_run.py
 ### Корневые файлы проекта
 
 ```markdown
-- .env: Файл с переменными окружения для конфигурации.
-- aiogram_run.py: Главный файл для запуска бота.
-- create_bot.py: Файл с настройками бота.
-- requirements.txt: Файл с зависимостями проекта.
+- .env
+- .dockerignorefile
+- Dockerfile
+- Makefile: файл для удобного запуска и управления контейнерами
+- .gitignorefile
+- aiogram_run.py: файл для запуска бота
+- create_bot.py: файл с настройками бота
+- llama_groq_demo.py: демка LLama3с работой через GROQ
+- llama_localhost_demo.py: демка LLama3с с локальным запуском
+- README.md: Короткое описание проекта с GitHub
 ```
 
 # Лицензия
