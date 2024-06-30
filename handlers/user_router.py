@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
-from create_bot import bot, client_groq
+from create_bot import bot, client_groq, local_client
 from db_handler.db_funk import (get_user_data, insert_user, clear_dialog,
                                 add_message_to_dialog_history, get_dialog_status)
 from keyboards.kbs import start_kb, stop_speak
@@ -65,14 +65,19 @@ async def handle_message(message: Message):
                                                              message=user_msg_dict,
                                                              return_history=True)
 
-        # отправляем сообщение пользователя ассистенту и ждем ответ
-        chat_completion = client_groq.chat.completions.create(messages=dialog_history, model="llama3-70b-8192")
+        #Пример работы с GROQ
+        chat_completion = client_groq.chat.completions.create(model="llama3-70b-8192", messages=dialog_history)
+        message_llama = await message.answer(text=chat_completion.choices[0].message.content, reply_markup=stop_speak())
 
-        # отправляем ответ ассистента пользователю
-        await message.answer(text=chat_completion.choices[0].message.content, reply_markup=stop_speak())
+        '''
+        # Пример работы с локальной моделью
+        
+        chat_completion = local_client.chat.completions.create(model="llama3:8b", messages=dialog_history)
+        message_llama = await message.answer(text=chat_completion.choices[0].message.content, reply_markup=stop_speak())
+        '''
 
     # формируем словарь с сообщением ассистента
-    assistant_msg = {"role": "assistant", "content": message.text}
+    assistant_msg = {"role": "assistant", "content": message_llama.text}
 
     # сохраняем сообщение ассистента в базу данных
     await add_message_to_dialog_history(user_id=message.from_user.id, message=assistant_msg,

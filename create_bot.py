@@ -5,8 +5,11 @@ from aiogram.enums import ParseMode
 from asyncpg_lite import DatabaseManager
 from decouple import config
 from groq import Groq
+from openai import OpenAI
 
 client_groq = Groq(api_key=config("GROQ_API_KEY"))
+local_client = OpenAI(base_url='http://localhost:11434/v1', api_key='ollama')
+
 # получаем список администраторов из .env
 admins = [int(admin_id) for admin_id in config('ADMINS').split(',')]
 

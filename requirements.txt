@@ -3,3 +3,4 @@ aiogram~=3.7.0
 python-decouple
 groq
 pytz
+openai
